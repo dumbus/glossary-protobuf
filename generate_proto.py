@@ -2,22 +2,24 @@
 import subprocess
 import sys
 
+# Запуск команды для генерации на основе protobuf
 subprocess.run([
   sys.executable, "-m", "grpc_tools.protoc",
   "-Iprotobufs",
   "--python_out=src/generated",
   "--grpc_python_out=src/generated",
-  "protobufs/helloworld.proto"
+  "protobufs/glossary.proto"
 ])
 
-grpc_file = "src/generated/helloworld_pb2_grpc.py"
+# Исправление импортов в сгенерированных файлах (для сохранения стуктуры с директорией 'generated')
+grpc_file = "src/generated/glossary_pb2_grpc.py"
 
 with open(grpc_file, 'r') as f:
   content = f.read()
 
 content = content.replace(
-  'import helloworld_pb2 as helloworld__pb2',
-  'from . import helloworld_pb2 as helloworld__pb2'
+  'import glossary_pb2 as glossary__pb2',
+  'from . import glossary_pb2 as glossary__pb2'
 )
 
 with open(grpc_file, 'w') as f:
